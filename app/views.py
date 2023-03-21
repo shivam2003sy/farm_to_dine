@@ -4,11 +4,11 @@
 # import matplotlib.pyplot as plt
 # plt.switch_backend('agg')
 # # Flask modules
-# from flask import render_template, request, url_for, redirect, send_from_directory,flash  ,jsonify
+from flask import render_template, request, url_for, redirect, send_from_directory,flash  ,jsonify
 # from flask_login import login_user, logout_user, current_user, login_required
 # from werkzeug.utils import secure_filename
 # # App modules
-# from app import app, lm, db, bc, api
+from app import app, lm, db, bc, api
 # from app.models import User ,Userprofile, Post ,Follow ,Postlikes , Comments
 # from app.forms import LoginForm, RegisterForm 
 # from app.util import allowed_file  , delete_image
@@ -87,7 +87,9 @@
 #             msg = "No user registerd with this usename "
 #     return render_template('accounts/login.html', form=form, msg=msg)
 
-
+@app.route('/')
+def index():
+    return 'this is my api application'
 
 # # App main route + generic routing
 # @app.route('/')

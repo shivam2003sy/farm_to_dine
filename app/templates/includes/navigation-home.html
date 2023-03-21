@@ -1,0 +1,68 @@
+<!-- nav bar  -->
+<nav class="navbar navbar-expand-lg navbar-light  fixed-top"  style="background-color: #ffffff" > 
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img src="/static/img/blogv.jpg" alt="logo" width="auto"  height="40"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+      <div class="nav  justify-content-end ">
+        <a class="nav-link" href="/"
+        >Home 
+        <span class="sr-only"></span></a
+      >
+      <a class="nav-link" href="#"><i  data-bs-toggle="modal" data-bs-target="#exampleModal"
+        style="color: black"> Create Blog</i></a>
+      <a class="nav-link" href="{{url_for('myprofile')}}"
+        style="color: black">Profile</a>
+        <a class="nav-link" href="{{url_for('logout')}}"
+          style="color: black">logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>  
+<script>
+  document.getElementById('search-form').addEventListener('submit', function(e) {
+    e.preventDefault(); // prevent the form from submitting
+
+    // Get the search query
+    var query = document.getElementById('search-query').value;
+
+    // Send the search query to the server
+    fetch('/search', {
+        method: 'POST',
+        body: JSON.stringify({query: query}),
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        // Handle the search results
+        var searchResults = document.getElementById('search-results');
+        searchResults.innerHTML = "";
+        for (var i = 0; i < data.length; i++) {
+            var p = document.createElement("p");
+            var node = document.createTextNode(data[i]);
+            p.appendChild(node);
+            searchResults.appendChild(p);
+        }
+        // Show the search results modal
+        document.getElementById('search-results-modal').style.display = 'block';
+    });
+});
+// script.js
+document.getElementById('close-button').addEventListener('click', function(e) {
+    // hide the modal
+    document.getElementById('search-results-modal').style.display = 'none';
+});
+</script>

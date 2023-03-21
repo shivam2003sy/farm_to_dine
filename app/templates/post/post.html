@@ -1,0 +1,130 @@
+{% extends "layouts/base-all.html" %}
+{% block title %} Board {% endblock %}
+{% block content %}
+<!-- Main content -->
+<section>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="card  mb-3">
+                <div class="card-header">
+                    <img src="/static/img/logo.png" class="mr-2"
+                        style="width: 35px; height: 35px; border-radius: 50%" />
+                    <span class="postuserfont"><strong>{{user.user}}</strong></span>
+                    <span class="float-right mt-2"><strong><i class="fas fa-ellipsis-h"></i></strong></span>
+                </div>
+                <img src="/static/path/to/the/uploads/{{post.imgpath}}" class="card-img-top" alt="..." />
+                <ul class="list-group list-group-horizontal mt-1" style="list-style-type: none; border: 0">
+                   <!-- heart button  -->
+            {% if post.id in like_list %}
+            <li class="nav-item">
+              <a class="nav-link"><i class="fas fa-sharp fa-heart fa-solid fa-lg"
+              style="color: black; position: relative; font-size: 23px" onclick="unlike('{{post.id}}')"></i></a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" ><i class="far fa-heart  fa-lg"
+                  style="color: black; position: relative; font-size: 23px" onclick="like('{{post.id}}')"></i></a>
+            </li>
+            {% endif %}
+                </ul>
+                <span>
+                    <span class="postuserfont m-2"><strong>Total likes : {{post.no_of_likes}}</span>
+                </span>
+            {% for i in comment %}
+                <div class="card-body" style="margin-top: -15px">
+                    <a href="#" style="text-decoration: none">
+                        <p class="card-text postuserfont">
+                            <strong style="margin-left: -4px; margin-right: 5px">{{i.Userprofile.User.user}} :-</strong>{{i.comment}}
+                        </p>
+                    </a>
+                </div>
+                {% endfor %}
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-12 col
+                        -sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="myText" placeholder="Add a comment...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="addComment('{{post.id}}')">Post</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if user == current_user %}
+    <!-- graph-->
+    <div class="row justify-content-center">
+      <div class = "card" style="width: 40rem;">
+          <h1 class="card-header">Engagement</h1>
+          <div class="card-body" style="margin-top: -15px">
+            <img src="/static/path/to/the/uploads/{{image_path}}" alt="plot" class="card-img-top"/>
+          </div>
+        </div></div>
+    
+{% endif %}
+    
+    
+
+</div>
+</section>
+<script>
+    
+function reloadpage(){
+  window.location.reload();
+    }
+function like(id){
+    console.log(id)
+    fetch('https://liteblog.azurewebsites.net//like',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id:id
+      })
+    }).then(res => {console.log(res)
+    
+    reloadpage()})
+}
+function unlike(id){
+    console.log(id)
+    fetch('https://liteblog.azurewebsites.net//unlike',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id:id
+      })
+    }).then(res => {console.log(res)
+    
+    reloadpage()})
+}
+
+
+function addComment(id){
+    console.log(id)
+    var input = document.getElementById("myText").value;
+    console.log(input);
+    fetch('https://liteblog.azurewebsites.net//comment',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id:id,
+        comment:input
+      })
+    }).then(res => {console.log(res)}
+    )
+    reloadpage()
+  }
+</script>
+<!-- post end here -->
+{% endblock %}
